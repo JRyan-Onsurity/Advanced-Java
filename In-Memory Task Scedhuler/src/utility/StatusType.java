@@ -4,4 +4,5 @@ public enum StatusType {
     SCHEDULED,
     RUNNING,
     COMPLETED,
+    CREATED
 }

@@ -14,6 +14,7 @@ public enum TaskType {
         this.delay=delay;
     }
     public String getPriority() {
+
         return this.priority;
     }
     public int getDelay() {

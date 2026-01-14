@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TaskStore extends HashMap<AtomicInteger, Task> {
+public class TaskStore extends HashMap<Integer, Task> {
 
 
 

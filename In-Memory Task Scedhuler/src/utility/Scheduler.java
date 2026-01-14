@@ -30,10 +30,10 @@ public class Scheduler {
     }
 
     public static void getTasks() throws InvalidStateException{
-        ArrayList<Task> tasks = new ArrayList<>();
-        for (Map.Entry<AtomicInteger, Task> entry: taskStore.entrySet()){
+        for (Map.Entry<Integer, Task> entry: taskStore.entrySet()){
                 System.out.println(entry.getValue().getId()+" Type: "+ entry.getValue().getTaskType()+ " Status: "+ entry.getValue().getTaskStatus());
         }
+        System.out.println(taskStore.size());
 
     }
     public static Task getTask(AtomicInteger id) throws InvalidStateException {
@@ -44,7 +44,7 @@ public class Scheduler {
     public ArrayList<Task> getTask(StatusType status){
         if (status == null) return null;
         ArrayList<Task> tasks = new ArrayList<>();
-        for (Map.Entry<AtomicInteger, Task> entry: taskStore.entrySet()){
+        for (Map.Entry<Integer, Task> entry: taskStore.entrySet()){
             if (entry.getValue().getTaskStatus().equals(status.name()))
             {
                 tasks.add(entry.getValue());
@@ -56,7 +56,7 @@ public class Scheduler {
     public ArrayList<Task> getTask(TaskType taskType){
         if (taskType == null) return null;
         ArrayList<Task> tasks = new ArrayList<>();
-        for (Map.Entry<AtomicInteger, Task> entry: taskStore.entrySet()){
+        for (Map.Entry<Integer, Task> entry: taskStore.entrySet()){
             if (entry.getValue()  .getTaskType().name()   .equals(taskType.name()))
             {
                 tasks.add(entry.getValue());
@@ -66,14 +66,13 @@ public class Scheduler {
     }
     public static  void  execute(){
         ArrayList<Task> tasks = new ArrayList<>();
-        for (Map.Entry<AtomicInteger, Task> entry: taskStore.entrySet()){
+        for (Map.Entry<Integer, Task> entry: taskStore.entrySet()){
             if (entry.getValue()  .getTaskStatus()   .equals(SCHEDULED.name()))
             {new Thread(()-> {
                 try {
                     entry.getValue().setStatus(RUNNING.name());
                     Thread.sleep(entry.getValue().getTaskType().getDelay());
                     Result result=executor.submit(entry.getValue());
-                    System.out.println("The task is a "+ result.getResultType().name());
                 } catch (InterruptedException e) {
                     System.out.println(e.getMessage());
                 }
@@ -85,19 +84,6 @@ public class Scheduler {
                 System.out.println(entry.getValue().getId() +" of type" +entry.getValue().getTaskType()+ " is already executed");
             }
         }
-    }
-
-    public  void  cancel(Map.Entry<Integer, Task> entry){
-        new Thread(()->{
-            try {
-                entry.getValue().setStatus(RUNNING.name());
-                Thread.sleep(entry.getValue().getTaskType().getDelay());
-                executor.submit(entry.getValue());
-            }
-            catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            }
-        });
     }
 
 

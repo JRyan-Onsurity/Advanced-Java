@@ -12,9 +12,10 @@ public class Main{
         for (int i=0; i<20; i++)
         {
             new Thread(() -> {
+                Integer id=ID.getId();
                 Random random = new Random();
                 int index = random.nextInt(tasks.length);
-                Task task = TaskFactory.getTask(tasks[index]);
+                Task task = TaskFactory.getTask(tasks[index], id);
                 Scheduler.schedule(task);
                  }).start();
          }
@@ -39,7 +40,7 @@ public class Main{
 
         }
         input.close();
-        System.exit(1);
+        System.exit(0);
 
     }
 }
